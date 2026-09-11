@@ -1,9 +1,0 @@
-package com.nit.exception;
-
-public class InsufficientSeatException extends RuntimeException {
-
-	public InsufficientSeatException(String msg)
-	{
-		super(msg);
-	}
-}

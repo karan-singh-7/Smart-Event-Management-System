@@ -1,9 +1,0 @@
-package com.nit.exception;
-
-public class RefundNotAlllowedException extends RuntimeException {
-
-	public RefundException(String msg)
-	{
-		super(msg);
-	}
-}

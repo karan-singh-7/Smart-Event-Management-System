@@ -1,3 +1,6 @@
+# Eclipse workspace
+.metadata/
+
 # Maven
 target/
 
@@ -25,3 +28,4 @@ bin/
 
 # Temporary files
 *.tmp
+/.metadata/

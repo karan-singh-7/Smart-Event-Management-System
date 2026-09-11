@@ -1,9 +1,0 @@
-package com.nit.exception;
-
-public class RefundException extends RuntimeException {
-
-	public RefundException(String msg)
-	{
-		super(msg);
-	}
-}

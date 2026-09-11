@@ -1,8 +1,0 @@
-package com.nit.service;
-
-import com.nit.dto.BookingRequest;
-import com.nit.dto.BookingResponse;
-
-public interface BookingService {
-    BookingResponse createBooking(BookingRequest request);
-}

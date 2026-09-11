@@ -1,5 +1,0 @@
-package com.nit.kafka;
-
-public class PaymentEventProducer {
-
-}

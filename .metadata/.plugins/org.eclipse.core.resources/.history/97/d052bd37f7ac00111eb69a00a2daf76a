@@ -1,9 +1,0 @@
-package com.nit.exception;
-
-public class InvalidSeatUpdateException extends RuntimeException {
-
-	public InvalidSeatUpdateException(String msg)
-	{
-		super(msg);
-	}
-}

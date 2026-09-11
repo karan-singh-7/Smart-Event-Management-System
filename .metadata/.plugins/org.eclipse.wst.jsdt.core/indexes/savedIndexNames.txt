@@ -1,1 +1,0 @@
-INDEX VERSION 1.4+C:\Users\Karan Singh\Smart-Event-Management\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
