@@ -1,14 +1,15 @@
 package com.nit.service;
 
-import java.util.List;
-
+import com.nit.dto.NotificationPageResponse;
 import com.nit.dto.NotificationResponse;
 
 public interface NotificationService {
 
     NotificationResponse getNotificationById(Long notificationId);
 
-    List<NotificationResponse> getCustomerNotifications(Long customerId);
+    NotificationPageResponse getCustomerNotifications(Long customerId, int page, int size);
 
-    List<NotificationResponse> getBookingNotifications(Long bookingId);
+    NotificationPageResponse getBookingNotifications(Long bookingId, int page, int size);
+    
+    NotificationResponse markAsRead(Long notificationId);
 }

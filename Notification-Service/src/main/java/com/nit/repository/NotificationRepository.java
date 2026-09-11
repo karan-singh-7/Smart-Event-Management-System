@@ -1,15 +1,19 @@
 package com.nit.repository;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.nit.entity.Notification;
 
-public interface NotificationRepository extends JpaRepository<Notification, Long> {
-	List<Notification> findByCustomerIdOrderByCreatedAtDesc(
-            Long customerId);
+public interface NotificationRepository
+        extends JpaRepository<Notification, Long> {
 
-    List<Notification> findByBookingIdOrderByCreatedAtDesc(
-            Long bookingId);
+    Page<Notification> findByCustomerIdOrderByCreatedAtDesc(
+            Long customerId,
+            Pageable pageable);
+
+    Page<Notification> findByBookingIdOrderByCreatedAtDesc(
+            Long bookingId,
+            Pageable pageable);
 }
