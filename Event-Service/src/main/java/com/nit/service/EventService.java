@@ -1,0 +1,33 @@
+package com.nit.service;
+
+import com.nit.dto.EventPageResponse;
+import com.nit.dto.EventRequest;
+import com.nit.dto.EventResponse;
+import com.nit.entity.EventCategory;
+import com.nit.entity.EventStatus;
+
+public interface EventService {
+	
+	    EventResponse createEvent(EventRequest request);
+
+	    EventResponse getEventById(Long eventId);
+
+	    EventResponse updateEvent(Long eventId, EventRequest request);
+
+	    void deleteEvent(Long eventId);
+	    
+	    EventPageResponse searchEvents(
+	            String keyword,
+	            EventCategory category,
+	            EventStatus status,
+	            Double minPrice,
+	            Double maxPrice,
+	            int page,
+	            int size,
+	            String sortBy,
+	            String direction);
+	    
+	    EventResponse reserveSeats( Long eventId, Integer noOfSeats);
+	    
+		EventResponse releaseSeats(Long eventId, Integer numberOfSeats);
+}

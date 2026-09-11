@@ -1,0 +1,53 @@
+package com.nit.controller;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.nit.dto.BookingRequest;
+import com.nit.dto.BookingResponse;
+import com.nit.service.BookingService;
+
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/booking")
+public class BookingController {
+
+	private BookingService service;
+	
+	public BookingController(BookingService service)
+	{
+		this.service=service;
+	}
+	
+	@GetMapping("/{bookingId}")
+	public ResponseEntity<BookingResponse> getBookingById(@PathVariable Long bookingId)
+	{
+		BookingResponse booking = service.getBookingById(bookingId);
+		
+		return ResponseEntity.ok(booking);
+	}
+	
+	@GetMapping
+	public ResponseEntity<BookingResponse> createBooking(@Valid @RequestBody BookingRequest request)
+	{
+		BookingResponse booking = service.createBooking(request);
+		
+		return ResponseEntity
+				 .status(HttpStatus.CREATED)
+				 .body(booking);
+	}
+	
+	@PutMapping("/{bookingId}/cancel")
+	public ResponseEntity<BookingResponse> cancelBooking( @PathVariable Long bookingId) 
+	{
+	    return ResponseEntity.ok( service.cancelBooking(bookingId));
+	}
+	
+}

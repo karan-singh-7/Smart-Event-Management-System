@@ -1,0 +1,26 @@
+package com.nit.dto;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+import com.nit.entity.EventCategory;
+import com.nit.entity.EventStatus;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
+public class EventResponse {
+
+	    private Long eventId;
+	    private String eventName;
+	    private EventCategory eventCategory;
+	    private LocalDate eventDate;
+	    private LocalTime eventTime;
+	    private Long venueId;
+	    private Integer totalSeats;
+	    private Integer availableSeats;
+	    private Double ticketPrice;
+	    private EventStatus status;
+}

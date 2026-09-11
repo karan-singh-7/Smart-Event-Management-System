@@ -1,0 +1,5 @@
+127.0.0.1 - - [27/Jul/2026:18:22:56 +0530] "GET / HTTP/1.1" 404 752
+0:0:0:0:0:0:0:1 - - [27/Jul/2026:18:22:57 +0530] "GET /EmployeeAssestsManagementSystem/ HTTP/1.1" 302 -
+0:0:0:0:0:0:0:1 - - [27/Jul/2026:18:22:57 +0530] "GET /EmployeeAssestsManagementSystem/login HTTP/1.1" 200 1167
+0:0:0:0:0:0:0:1 - - [27/Jul/2026:18:22:57 +0530] "GET /EmployeeAssestsManagementSystem/default-ui.css HTTP/1.1" 200 3080
+0:0:0:0:0:0:0:1 - - [27/Jul/2026:18:22:58 +0530] "GET /favicon.ico HTTP/1.1" 404 763

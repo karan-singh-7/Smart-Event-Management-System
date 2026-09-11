@@ -1,0 +1,10 @@
+package com.nit.service;
+
+import com.nit.dto.BookingRequest;
+import com.nit.dto.BookingResponse;
+
+public interface BookingService {
+	BookingResponse getBookingById(Long bookingId);
+    BookingResponse createBooking(BookingRequest request);
+    BookingResponse cancelBooking(Long bookingId);
+}

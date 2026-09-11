@@ -1,0 +1,40 @@
+package com.nit.controller;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.nit.dto.PaymentRequest;
+import com.nit.dto.PaymentResponse;
+import com.nit.service.PaymentService;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/payment")
+public class PaymentController {
+
+	private final PaymentService service;
+	
+	@PostMapping
+	public ResponseEntity<PaymentResponse> processPayment(@Valid @RequestBody PaymentRequest request)
+	{
+		PaymentResponse response = service.processPayment(request);
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+	}
+	
+	@PostMapping("/refund/{bookingId}")
+	public ResponseEntity<PaymentResponse> refundPayment(
+	        @PathVariable Long bookingId) {
+
+	    return ResponseEntity.ok(
+	            service.refundPayment(bookingId)
+	    );
+	}
+}

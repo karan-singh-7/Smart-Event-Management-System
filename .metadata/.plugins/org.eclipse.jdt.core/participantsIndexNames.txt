@@ -1,0 +1,3 @@
+INDEX VERSION 1.134
+C:\Users\Karan Singh\project-workspace\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\127699375.index
+\EmployeeAssestsManagementSystem\src\main\java

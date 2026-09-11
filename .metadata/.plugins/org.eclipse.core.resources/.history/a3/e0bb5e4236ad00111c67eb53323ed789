@@ -1,0 +1,8 @@
+package com.nit.client;
+
+import org.springframework.cloud.openfeign.FeignClient;
+
+@FeignClient(name = "Booking-Service")
+public interface BookingClient {
+
+}

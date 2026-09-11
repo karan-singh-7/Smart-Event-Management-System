@@ -1,0 +1,20 @@
+package com.nit.service;
+
+import java.util.List;
+
+import com.nit.dto.EventPageResponse;
+import com.nit.dto.EventRequest;
+import com.nit.dto.EventResponse;
+
+public interface EventService {
+	
+	    EventResponse createEvent(EventRequest request);
+
+	    EventResponse getEventById(Long eventId);
+
+	    EventResponse updateEvent(Long eventId, EventRequest request);
+
+	    void deleteEvent(Long eventId);
+	    
+	    EventPageResponse getEvents(int page, int size, String sortBy, String direction);
+}

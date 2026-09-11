@@ -1,0 +1,79 @@
+package com.nit.service;
+
+import java.util.List;
+
+import com.nit.dto.EventRequest;
+import com.nit.dto.EventResponse;
+import com.nit.entity.Event;
+import com.nit.entity.EventStatus;
+import com.nit.repository.EventRepository;
+
+public class EventServiceImpl implements EventService {
+
+	private final EventRepository repository;
+	
+	public EventServiceImpl(EventRepository  repository)
+	{
+		this.repository = repository;
+	}
+	
+	@Override
+	public EventResponse createEvent(EventRequest request) {
+		
+		 Event event = new Event();
+	     event.setEventName(request.getEventName());
+	     event.setEventCategory(request.getEventCategory());
+	     event.setEventDate(request.getEventDate());
+	     event.setEventTime(request.getEventTime());
+	     event.setVenueId(request.getVenueId());
+	     event.setTotalSeats(request.getTotalSeats());
+	     event.setAvailableSeats(request.getTotalSeats());
+	     event.setTicketPrice(request.getTicketPrice());
+	     event.setEventStatus(EventStatus.UPCOMING);
+	     
+	     Event savedEvent = repository.save(event);
+		return mapToResponse(savedEvent);
+	}
+
+	@Override
+	public EventResponse getEventById(Long eventId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<EventResponse> getAllEvents() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public EventResponse updateEvent(Long eventId, EventRequest request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteEvent(Long eventId) {
+		// TODO Auto-generated method stub
+
+	}
+	
+	  private EventResponse mapToResponse(Event event) {
+
+	        EventResponse response = new EventResponse();
+	        
+	        response.setEventId(event.getEventId());
+	        response.setEventDate(event.getEventDate());
+	        response.setEventName(event.getEventName());
+	        response.setEventCategory(event.getEventCategory());
+	        response.setEventTime(event.getEventTime());
+	        response.setVenueId(event.getVenueId());
+	        response.setStatus(event.getEventStatus());
+	        response.setAvailableSeats(event.getAvailableSeats());
+	        response.setTotalSeats(event.getTotalSeats());
+	        response.setTicketPrice(response.getTicketPrice());
+	        return response;
+	    }
+
+}

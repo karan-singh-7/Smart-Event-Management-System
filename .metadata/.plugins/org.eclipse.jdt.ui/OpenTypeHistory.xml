@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<typeInfoHistroy>
+    <typeInfo handle="=Customer-Service/C:\/Users\/Karan Singh\/.m2\/repository\/org\/springframework\/data\/spring-data-jpa\/4.0.7\/spring-data-jpa-4.0.7.jar=/maven.pomderived=/true=/=/org.eclipse.jst.component.archivename=/spring-data-jpa-4.0.7.jar=/=/maven.groupId=/org.springframework.data=/=/maven.artifactId=/spring-data-jpa=/=/maven.version=/4.0.7=/=/maven.scope=/compile=/=/maven.pomderived=/true=/=/org.eclipse.jst.component.dependency=/\/WEB-INF\/lib=/&lt;org.springframework.data.jpa.repository(JpaRepository.class[JpaRepository" modifiers="1537" timestamp="1787975482141"/>
+    <typeInfo handle="=Event-Service/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.nit.service{EventService.java[EventService" modifiers="513" timestamp="1789056630042"/>
+</typeInfoHistroy>

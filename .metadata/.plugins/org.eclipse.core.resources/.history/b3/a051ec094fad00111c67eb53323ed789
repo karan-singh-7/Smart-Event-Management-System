@@ -1,0 +1,132 @@
+package com.nit.service;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+
+import com.nit.client.BookingClient;
+import com.nit.dto.BookingResponse;
+import com.nit.dto.PaymentFailedEvent;
+import com.nit.dto.PaymentRequest;
+import com.nit.dto.PaymentResponse;
+import com.nit.dto.PaymentSuccessEvent;
+import com.nit.entity.Payment;
+import com.nit.entity.PaymentMode;
+import com.nit.entity.PaymentStatus;
+import com.nit.exception.BookingServiceUnavailableException;
+import com.nit.exception.PaymentNotAllowedException;
+import com.nit.kafka.PaymentEventProducer;
+import com.nit.repository.PaymentRespository;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class PaymentServiceImpl implements PaymentService {
+	
+	private final PaymentRespository paymentRespository;
+	private final BookingClient client;
+	private final PaymentEventProducer producer;
+
+	@Override
+	@Retry(name = "bookingService", fallbackMethod = "bookingServiceFallback")
+	@CircuitBreaker(name = "bookingService", fallbackMethod = "bookingServiceFallback")
+	public PaymentResponse processPayment(PaymentRequest request) {
+		
+		BookingResponse booking = client.getBookingById(request.getBookingId());
+		
+		if(!"Pending".equalsIgnoreCase(booking.getBookingStatus()))
+		{
+			throw new PaymentNotAllowedException("Payment not allowed for this booking!");
+		}
+		
+		double amount = booking.getTotalAmount();
+		
+		PaymentStatus paymentStatus = processMockPayment(request.getPaymentMode());
+		
+		String transactionReference = "TXN-"+UUID.randomUUID();
+		
+		 Payment payment = Payment.builder()
+	                .bookingId(booking.getBookingId())
+	                .amount(amount)
+	                .paymentMode(request.getPaymentMode())
+	                .transactionReference(transactionReference)
+	                .paymentStatus(paymentStatus)
+	                .paymentDate(LocalDateTime.now())
+	                .build();
+		 
+		 Payment savedPayment = paymentRespository.save(payment);
+		 
+		 if(savedPayment.getPaymentStatus() == PaymentStatus.SUCCESS)
+		 {
+			 PaymentSuccessEvent event = PaymentSuccessEvent
+					                        .builder()
+					                        .bookingId(savedPayment.getBookingId())
+					                        .paymentId(savedPayment.getPaymentId())
+					                        .amount(savedPayment.getAmount())
+					                        .transactionReference(savedPayment.getTransactionReference())
+					                        .build();
+			 
+			 producer.publishPaymentSuccess(event);
+		 }
+		 else {
+			 PaymentFailedEvent event = new PaymentFailedEvent(
+					                         savedPayment.getPaymentId(),
+					                         savedPayment.getBookingId(),
+					                         booking.getCustomerId(),
+					                         savedPayment.getAmount(),
+					                         savedPayment.getTransactionReference()
+					                         );
+			 
+			 producer.publishPaymentFailure(event);
+					 
+		 }
+		
+		
+		return mapToResponse(savedPayment);
+	}
+	
+	// fallback method
+	private PaymentResponse bookingServiceFallback(PaymentRequest request, Throwable throwable) 
+	{
+
+	    throw new BookingServiceUnavailableException("Booking Service is currently unavailable!");
+	                                      
+	}
+	
+    private PaymentStatus processMockPayment( PaymentMode paymentMode) 
+    {
+
+        if (paymentMode ==
+                PaymentMode.NET_BANKING) {
+
+            return PaymentStatus.FAILED;
+        }
+
+        return PaymentStatus.SUCCESS;
+    }
+
+
+    private PaymentResponse mapToResponse( Payment payment) 
+    {
+
+        return PaymentResponse.builder()
+                .paymentId(payment.getPaymentId())
+                .bookingId(payment.getBookingId())
+                .amount(payment.getAmount())
+                .paymentMode(payment.getPaymentMode())
+                .transactionReference(
+                        payment.getTransactionReference()
+                )
+                .paymentStatus(payment.getPaymentStatus())
+                .paymentDate(payment.getPaymentDate())
+                .build();
+    }
+
+
+}

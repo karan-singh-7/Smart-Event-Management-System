@@ -1,0 +1,16 @@
+package com.nit.service;
+
+import java.util.List;
+
+import com.nit.dto.NotificationResponse;
+
+public interface NotificationService {
+
+    NotificationResponse getNotificationById(Long notificationId);
+
+    List<NotificationResponse> getCustomerNotifications(
+            Long customerId);
+
+    List<NotificationResponse> getBookingNotifications(
+            Long bookingId);
+}

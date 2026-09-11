@@ -1,0 +1,12 @@
+package com.nit.exception;
+
+
+public class InsufficientVenueCapacityException extends RuntimeException {
+
+	private static final long serialVersionUID = 1L;
+
+	 public InsufficientVenueCapacityException(String message) {
+	        super(message);
+	    }
+	 
+}

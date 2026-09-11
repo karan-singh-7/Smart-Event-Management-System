@@ -1,0 +1,98 @@
+package com.nit.specification;
+
+import org.springframework.data.jpa.domain.Specification;
+
+import com.nit.entity.Event;
+import com.nit.entity.EventCategory;
+import com.nit.entity.EventStatus;
+
+
+public class EventSpecification {
+
+    public static Specification<Event> hasKeyword(String keyword) {
+
+        return (root, query, criteriaBuilder) -> {
+
+            if (keyword == null || keyword.isBlank()) {
+                return null;
+            }
+
+            String searchKeyword = "%" + keyword.toLowerCase() + "%";
+
+            return criteriaBuilder.or(
+                    criteriaBuilder.like(
+                            criteriaBuilder.lower(root.get("eventName")),
+                            searchKeyword
+                    )
+            );
+        };
+    }
+
+
+    public static Specification<Event> hasCategory(
+            EventCategory category) {
+
+        return (root, query, criteriaBuilder) -> {
+
+            if (category == null) {
+                return null;
+            }
+
+            return criteriaBuilder.equal(
+                    root.get("eventCategory"),
+                    category
+            );
+        };
+    }
+
+
+    public static Specification<Event> hasStatus(
+            EventStatus status) {
+
+        return (root, query, criteriaBuilder) -> {
+
+            if (status == null) {
+                return null;
+            }
+
+            return criteriaBuilder.equal(
+                    root.get("status"),
+                    status
+            );
+        };
+    }
+
+
+    public static Specification<Event> priceGreaterThanOrEqualTo(
+            BigDecimal minPrice) {
+
+        return (root, query, criteriaBuilder) -> {
+
+            if (minPrice == null) {
+                return null;
+            }
+
+            return criteriaBuilder.greaterThanOrEqualTo(
+                    root.get("ticketPrice"),
+                    minPrice
+            );
+        };
+    }
+
+
+    public static Specification<Event> priceLessThanOrEqualTo(
+            Double maxPrice) {
+
+        return (root, query, criteriaBuilder) -> {
+
+            if (maxPrice == null) {
+                return null;
+            }
+
+            return criteriaBuilder.lessThanOrEqualTo(
+                    root.get("ticketPrice"),
+                    maxPrice
+            );
+        };
+    }
+}

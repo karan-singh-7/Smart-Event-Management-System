@@ -1,0 +1,27 @@
+package com.nit.dto;
+
+import java.time.LocalDateTime;
+
+import com.nit.entity.BookingStatus;
+
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+@Builder
+public class BookingResponse {
+
+    private Long bookingId;
+
+    private Long customerId;
+
+    private Long eventId;
+
+    private Integer numberOfSeats;
+
+    private Double totalAmount;
+
+    private LocalDateTime bookingDate;
+
+    private BookingStatus bookingStatus;
+}

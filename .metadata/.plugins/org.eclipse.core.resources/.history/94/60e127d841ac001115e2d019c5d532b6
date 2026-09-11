@@ -1,0 +1,11 @@
+package com.nit.client;
+
+import org.springframework.cloud.openfeign.FeignClient;
+
+import com.nit.dto.VenueResponse;
+
+@FeignClient("Venue-Service")
+public interface VenueClient {
+	
+	VenueResponse getVenueById(Long venueId);
+}

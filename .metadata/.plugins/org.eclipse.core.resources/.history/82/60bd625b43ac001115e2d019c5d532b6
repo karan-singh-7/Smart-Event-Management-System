@@ -1,0 +1,106 @@
+package com.nit.service;
+
+import java.util.List;
+
+import com.nit.client.VenueClient;
+import com.nit.dto.EventRequest;
+import com.nit.dto.EventResponse;
+import com.nit.dto.VenueResponse;
+import com.nit.entity.Event;
+import com.nit.entity.EventStatus;
+import com.nit.exception.EventNotFoundException;
+import com.nit.exception.VenueNotFoundException;
+import com.nit.repository.EventRepository;
+
+public class EventServiceImpl implements EventService {
+
+	private final EventRepository repository;
+	
+	private final VenueClient client;
+	
+	public EventServiceImpl(EventRepository  repository, VenueClient client)
+	{
+		this.repository = repository;
+		this.client = client;
+	}
+	
+	@Override
+	public EventResponse createEvent(EventRequest request) {
+		
+		VenueResponse venue = client.getVenueById(request.getVenueId());
+		
+		if(venue==null)
+		{
+			throw new VenueNotFoundException("Venue are not found with id: "+request.getVenueId());
+		}
+		
+		 Event event = new Event();
+	     event.setEventName(request.getEventName());
+	     event.setEventCategory(request.getEventCategory());
+	     event.setEventDate(request.getEventDate());
+	     event.setEventTime(request.getEventTime());
+	     event.setVenueId(request.getVenueId());
+	     event.setTotalSeats(request.getTotalSeats());
+	     event.setAvailableSeats(request.getTotalSeats());
+	     event.setTicketPrice(request.getTicketPrice());
+	     event.setEventStatus(EventStatus.UPCOMING);
+	     
+	     Event savedEvent = repository.save(event);
+		return mapToResponse(savedEvent);
+	}
+
+	@Override
+	public EventResponse getEventById(Long eventId) {
+		
+		Event event = repository.findById(eventId).orElseThrow(() -> new EventNotFoundException("Event not found with id: "+eventId));
+		return mapToResponse(event);
+	}
+
+	@Override
+	public List<EventResponse> getAllEvents() {
+		List<Event> events = repository.findAll();
+		return events.stream().map(e -> mapToResponse(e)).toList();
+	}
+
+	@Override
+	public EventResponse updateEvent(Long eventId, EventRequest request) {
+		
+		Event event = repository.findById(eventId).orElseThrow(() -> new EventNotFoundException("Event not found with id: "+eventId));
+		
+		event.setEventName(request.getEventName());
+        event.setEventCategory(request.getEventCategory());
+        event.setEventDate(request.getEventDate());
+        event.setEventTime(request.getEventTime());
+        event.setVenueId(request.getVenueId());
+        event.setTotalSeats(request.getTotalSeats());
+        event.setTicketPrice(request.getTicketPrice());
+
+        Event updatedEvent = repository.save(event);
+
+        return mapToResponse(updatedEvent);
+	}
+
+	@Override
+	public void deleteEvent(Long eventId) {
+		Event event = repository.findById(eventId).orElseThrow(() -> new EventNotFoundException("Event not found with id: "+eventId));
+		repository.delete(event);
+	}
+	
+	  private EventResponse mapToResponse(Event event) {
+
+	        EventResponse response = new EventResponse();
+	        
+	        response.setEventId(event.getEventId());
+	        response.setEventDate(event.getEventDate());
+	        response.setEventName(event.getEventName());
+	        response.setEventCategory(event.getEventCategory());
+	        response.setEventTime(event.getEventTime());
+	        response.setVenueId(event.getVenueId());
+	        response.setStatus(event.getEventStatus());
+	        response.setAvailableSeats(event.getAvailableSeats());
+	        response.setTotalSeats(event.getTotalSeats());
+	        response.setTicketPrice(response.getTicketPrice());
+	        return response;
+	    }
+
+}

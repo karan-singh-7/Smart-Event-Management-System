@@ -1,0 +1,20 @@
+package com.nit.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class PaymentFailedEvent {	
+	private Long paymentId;
+
+    private Long bookingId;
+
+    private Double amount;
+
+    private String transactionReference;
+}

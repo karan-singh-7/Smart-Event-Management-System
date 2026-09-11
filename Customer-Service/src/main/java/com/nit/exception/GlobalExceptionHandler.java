@@ -1,0 +1,42 @@
+package com.nit.exception;
+
+import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+	@ExceptionHandler(DuplicateCustomerException.class)
+	public ResponseEntity<Map<String, Object>> handleDuplicateCustomerException(DuplicateCustomerException exception)
+	{
+		Map<String, Object> response = new LinkedHashMap<>();
+		response.put("timestamp", LocalDateTime.now());
+        response.put("status", HttpStatus.NOT_FOUND.value());
+        response.put("error", "Customer Not Found");
+        response.put("message", exception.getMessage());
+        
+        return ResponseEntity
+        		        .status(HttpStatus.NOT_FOUND)
+        		        .body(response);
+	}
+	
+	@ExceptionHandler(CustomerNotFoundException.class)
+	public ResponseEntity<Map<String, Object>> handleCustomerNotFoundExceptionException(CustomerNotFoundException exception)
+	{
+		Map<String, Object> response = new LinkedHashMap<>();
+		response.put("timestamp", LocalDateTime.now());
+        response.put("status", HttpStatus.NOT_FOUND.value());
+        response.put("error", "Customer Not Found");
+        response.put("message", exception.getMessage());
+        
+        return ResponseEntity
+        		        .status(HttpStatus.NOT_FOUND)
+        		        .body(response);
+	}
+}
